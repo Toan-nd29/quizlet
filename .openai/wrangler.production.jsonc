@@ -1,0 +1,12 @@
+{
+  "name": "memostudy-production",
+  "compatibility_date": "2026-09-03",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "memostudy-production",
+      "database_id": "c9fa50d3-0699-4e29-a352-bc8e2b7d0f15",
+      "migrations_dir": "../drizzle"
+    }
+  ]
+}

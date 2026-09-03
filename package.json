@@ -9,6 +9,7 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "start": "wrangler dev --config dist/server/wrangler.json",
+    "deploy": "npm run build && node scripts/deploy.mjs",
     "lint": "oxlint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

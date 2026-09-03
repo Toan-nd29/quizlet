@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id
+  name      String
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  studySets StudySet[]
+}
+
+model StudySet {
+  id          String         @id
+  title       String
+  description String         @default("")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  ownerId     String
+  owner       User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  items       StudyItem[]
+  progress    StudyProgress[]
+  sessions    StudySession[]
+
+  @@index([ownerId, updatedAt])
+}
+
+model StudyItem {
+  id          String         @id
+  studySetId  String
+  question    String
+  answer      String
+  explanation String         @default("")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  order       Int
+  studySet    StudySet       @relation(fields: [studySetId], references: [id], onDelete: Cascade)
+  options     StudyOption[]
+  progress    StudyProgress?
+
+  @@index([studySetId, order])
+}
+
+model StudyOption {
+  id          String    @id
+  studyItemId String
+  content     String
+  isCorrect   Boolean   @default(false)
+  order       Int
+  studyItem   StudyItem @relation(fields: [studyItemId], references: [id], onDelete: Cascade)
+
+  @@index([studyItemId, order])
+}
+
+model StudyProgress {
+  id             String    @id
+  studySetId     String
+  studyItemId    String    @unique
+  status         String    @default("NEW")
+  correctCount   Int       @default(0)
+  incorrectCount Int       @default(0)
+  learningScore  Int       @default(0)
+  lastStudiedAt  DateTime?
+  studySet       StudySet  @relation(fields: [studySetId], references: [id], onDelete: Cascade)
+  studyItem      StudyItem @relation(fields: [studyItemId], references: [id], onDelete: Cascade)
+
+  @@index([studySetId, status])
+}
+
+model StudySession {
+  id               String    @id
+  studySetId       String
+  mode             String
+  startedAt        DateTime  @default(now())
+  completedAt      DateTime?
+  correctAnswers   Int       @default(0)
+  incorrectAnswers Int       @default(0)
+  totalAnswers     Int       @default(0)
+  studySet         StudySet  @relation(fields: [studySetId], references: [id], onDelete: Cascade)
+
+  @@index([studySetId, startedAt])
+}

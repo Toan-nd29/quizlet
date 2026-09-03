@@ -1,0 +1,76 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --radius-sm: calc(var(--radius) * .65);
+  --radius-md: calc(var(--radius) * .8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.35);
+  --radius-2xl: calc(var(--radius) * 1.75);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root, .dark {
+  color-scheme: dark;
+  --background: #080c1a;
+  --foreground: #f5f7ff;
+  --card: #12182a;
+  --card-foreground: #f5f7ff;
+  --popover: #171e33;
+  --popover-foreground: #f5f7ff;
+  --primary: #7c6cff;
+  --primary-foreground: #ffffff;
+  --secondary: #202944;
+  --secondary-foreground: #edf0ff;
+  --muted: #1b2238;
+  --muted-foreground: #9da8c7;
+  --accent: #282f4b;
+  --accent-foreground: #ffffff;
+  --destructive: #ff6b7c;
+  --border: #27304a;
+  --input: #303a58;
+  --ring: #8c7eff;
+  --radius: .75rem;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html { @apply bg-background font-sans; }
+  body { @apply min-h-screen bg-background text-foreground antialiased; }
+  ::selection { background: rgba(124, 108, 255, .35); }
+}
+
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.flashcard-stage { perspective: 1600px; }
+.flashcard-inner { position: relative; transform-style: preserve-3d; transition: transform .46s cubic-bezier(.2,.75,.25,1); }
+.flashcard-inner.is-flipped { transform: rotateX(180deg); }
+.flashcard-face { backface-visibility: hidden; }
+.flashcard-back { position: absolute; inset: 0; transform: rotateX(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
